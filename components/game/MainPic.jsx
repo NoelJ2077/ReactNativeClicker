@@ -1,9 +1,13 @@
 // MainPic.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 
-const MainPicComponent = ({ source, containerWidth, containerHeight, onPress }) => {
+const MainPicComponent = ({ source, containerWidth, containerHeight, onPress, refreshKey }) => {
   const [CCeffect] = useState(new Animated.Value(1));
+
+  // refreshKey is used to trigger re-render in case of bad image load
+  useEffect(() => {
+  }, [refreshKey]);
 
   const handleClick = () => {
     Animated.spring(CCeffect, {

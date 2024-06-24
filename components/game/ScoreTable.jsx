@@ -1,8 +1,10 @@
+// ScoreTable.jsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // values passed from parent component
-const ScoreTable = ({ allTimeScore, currentScore, upgradeLevel }) => {
+const ScoreTable = ({ allTimeScore, currentScore, upgradeLevel, onRefresh }) => {
   return (
     <View style={styles.scoreTable}>
       <View style={styles.scoreRow}>
@@ -14,6 +16,12 @@ const ScoreTable = ({ allTimeScore, currentScore, upgradeLevel }) => {
         </View>
         <View style={styles.scoreCell}>
           <Text style={styles.scoreText}>Click Power: {upgradeLevel}</Text>
+        </View>
+        {/** Reload Game Button (will just re render the Picture from MainPicComponent*/}
+        <View style={styles.scoreCell}>
+          <TouchableOpacity onPress={onRefresh} style={styles.refreshButton}>
+            <Text style={styles.scoreText}>Refresh Pic</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -51,6 +59,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scoreText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
+  reloadGame: {
+    flex: 1,
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  reloadText: {
     color: '#fff',
     textAlign: 'center',
   },

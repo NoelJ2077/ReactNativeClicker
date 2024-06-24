@@ -1,51 +1,39 @@
+// dashboard.jsx
+
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert, Animated, Dimensions } from 'react-native';
 import LoginPage from '../../components/forms/LoginPage';
 import RegisterPage from '../../components/forms/RegisterPage';
 import { auth } from '../../components/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
-import * as Clipboard from 'expo-clipboard'; // can't import only clipboard => error
+import * as Clipboard from 'expo-clipboard';
+
+// Game imports 
 import ScoreTable from '@/components/game/ScoreTable';
 import MainPicComponent from '@/components/game/MainPic';
 import mainPic from '@/assets/images/cookieMain.png';
-import BtnTable from '@/components/game/BtnTable'; 
+import BtnTable from '@/components/game/BtnTable';
 import ClickEffect from '@/components/game/ClickEffect';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+// Import der ausgelagerten Funktionen
+import { handleClick, buyUpgrade, handleShareScore } from '@/components/game/HandleGame';
 
 export default function CookieClicker() {
-  const [currentUID, setCurrentUID] = useState(null); // firestore usage only
+  const [currentUID, setCurrentUID] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [showLoginPage, setShowLoginPage] = useState(true);
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
-  // game stuff
   const [score, setScore] = useState(0);
   const [allTimeScore, setAllTimeScore] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
   const [upgradeCost, setUpgradeCost] = useState(25);
-
   const [clickEffectVisible, setClickEffectVisible] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const containerDimensions = { width: containerWidth, height: containerHeight };
 
-  // click event handler
-  const handleClick = (e) => {
-    setClickEffectVisible(true);
-    setTimeout(() => {
-      setClickEffectVisible(false);
-    }, 100);
-
-    setScore((prevScore) => {
-      const newScore = prevScore + 1 * multiplier;
-      return newScore;
-    });
-
-    // all time score is always + the current score
-    setAllTimeScore((prevScore) => {
-      const newScore = prevScore + 1 * multiplier;
-      return newScore;
-    });
-  };
-
-  useEffect(() => { // listen for auth state changes
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user);
@@ -58,38 +46,34 @@ export default function CookieClicker() {
     return unsubscribe;
   }, []);
 
-  // switch between login and register pages
-  const handleSwitchPage = () => {
-    setShowLoginPage(!showLoginPage);
+// dashboard.jsx
+  const handleScoreShare = () => {
+    handleShareScore(currentUser, score, allTimeScore, window.alert);
   };
 
-  // get container dimensions
+  const handleRefresh = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+    alert('Picture refreshed!');
+  };
+
   const onContainerLayout = (event) => {
     const { width, height } = event.nativeEvent.layout;
     setContainerWidth(width);
     setContainerHeight(height);
   };
 
-  const buyUpgrade = () => {
-    if (score >= upgradeCost) {
-      setScore(score - upgradeCost);
-      setMultiplier(multiplier + 1);
-      setUpgradeCost(upgradeCost * 2);
-    } else {
-      alert('Not enough score to buy upgrade');
-    }
+  const handleLogout = () => {
+    auth.signOut();
+    Alert.alert("Logged out successfully!");
   };
 
-  const handleShareScore = async () => {
-    alert(`Not implemented yet, 
-    but your Stats are: 
-    
-    Username: ${currentUser.displayName}
-    Current Score: ${score}
-    All Time Highscore: ${allTimeScore}
-    Email: ${currentUser.email}
-    
-    Scores Stored Temporarily!`);
+  const handleClipboard = () => {
+    Clipboard.setString(currentUser.email);
+    Alert.alert('Email: ' + currentUser.email + ' copied to clipboard!');
+  };
+
+  const handleUpgrade = () => {
+    buyUpgrade(score, setScore, multiplier, setMultiplier, upgradeCost, setUpgradeCost);
   };
 
   if (!currentUser) {
@@ -110,42 +94,37 @@ export default function CookieClicker() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.navbar}>
-        <Text style={styles.navbarText}>Welcome, {currentUser.displayName}</Text>
-        <TouchableOpacity onPress={() => { Clipboard.setString(currentUser.email); }}>
-          <Text style={styles.navbarText}>Email: {currentUser.email.slice(0, 3)}...{currentUser.email.slice(-3)}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          auth.signOut();
-          Alert.alert("Logged out successfully!");
-        }}>
-          <Text style={styles.navbarText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* ScoreTable component with passed args.*/}
-      <ScoreTable allTimeScore={allTimeScore} currentScore={score} upgradeLevel={multiplier} />
-
-      <View style={styles.innerContainer} onLayout={onContainerLayout}>
-        <View style={styles.header}>
-          <MainPicComponent source={mainPic} containerWidth={containerDimensions.width} containerHeight={containerDimensions.height} onPress={handleClick} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.navbar}>
+          <Text style={styles.navbarText}>Welcome, {currentUser.displayName}</Text>
+          <TouchableOpacity onPress={handleClipboard}>
+            <Text style={styles.navbarText}>Email: {currentUser.email.slice(0, 3)}...{currentUser.email.slice(-3)}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.navbarText}>Logout</Text>
+          </TouchableOpacity>
         </View>
-        {/* Platzieren Sie den AnimatedShiba hier, um sicherzustellen, dass er innerhalb des innerContainer angezeigt wird */}
-        <ClickEffect isVisible={clickEffectVisible} buttonDimensions={containerDimensions} />
-      </View>
 
-      {/* BtnTable (cookie) component with passed args. */}
-      <BtnTable
-        upgradeCost={upgradeCost}
-        buyUpgrade={buyUpgrade}
-        safeScore={score} // safe to firestore
-        handleShareScore={handleShareScore}
-      />
-    </View>
+        <ScoreTable allTimeScore={allTimeScore} currentScore={score} upgradeLevel={multiplier} upgradeCost={upgradeCost} onRefresh={handleRefresh} />
+
+        <View style={styles.innerContainer} onLayout={onContainerLayout}>
+          <View style={styles.header}>
+            <MainPicComponent key={refreshKey} source={mainPic} containerWidth={containerDimensions.width} containerHeight={containerDimensions.height} onPress={() => handleClick(score, setScore, setAllTimeScore, multiplier, setClickEffectVisible)} />
+          </View>
+          <ClickEffect isVisible={clickEffectVisible} buttonDimensions={containerDimensions} />
+        </View>
+
+        <BtnTable
+          upgradeCost={upgradeCost}
+          buyUpgrade={handleUpgrade}
+          safeScore={score}
+          handleShareScore={handleScoreShare}
+        />
+      </View>
+    </GestureHandlerRootView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
