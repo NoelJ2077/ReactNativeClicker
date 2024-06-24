@@ -26,7 +26,7 @@ export default function RegisterPage({ onRegister }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register for CC Clicker</Text>
+      <Text style={styles.title}>firebase sign-up CC Clicker</Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 80,
     marginBottom: 20,
+    marginBottom: '50%',
   },
   title: {
     fontSize: 24,
@@ -87,7 +88,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
   },
-  buttonText: { // doesn't do anything... => 
+  buttonText: {
     color: 'white',
+    fontSize: 20,
   },
 });

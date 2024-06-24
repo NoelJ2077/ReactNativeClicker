@@ -14,13 +14,14 @@ export const handleClick = (score, setScore, setAllTimeScore, multiplier, setCli
   setAllTimeScore((prevScore) => prevScore + 1 * multiplier);
 };
 
-export const buyUpgrade = (score, setScore, multiplier, setMultiplier, upgradeCost, setUpgradeCost, alert) => {
+export const buyUpgrade = (score, setScore, multiplier, setMultiplier, upgradeCost, setUpgradeCost) => {
   if (score >= upgradeCost) {
     setScore(score - upgradeCost);
     setMultiplier(multiplier + 1);
     setUpgradeCost(upgradeCost * 2);
   } else {
-    alert('Not enough score to buy upgrade');
+    // alert => error: alert is not a function (undefined) fix? =>
+      window.alert("Not enough score to buy the upgrade!");
   }
 };
 

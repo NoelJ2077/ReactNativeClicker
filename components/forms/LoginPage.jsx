@@ -22,7 +22,7 @@ export default function LoginPage({ onLogin }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>CC Clicker</Text>
+      <Text style={styles.title}>firebase login CC Clicker</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 80,
     marginBottom: 20,
+    marginBottom: '50%',
   },
   title: {
     fontSize: 24,
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   buttonText: {
-    color: 'white', // does not work
+    color: 'white',
+    fontSize: 20,
   },
 });

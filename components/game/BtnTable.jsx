@@ -1,16 +1,22 @@
+// BtnTable.jsx
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View, Alert } from 'react-native';
 
-const ButtonTable = ({ upgradeCost, score, buyUpgrade, handleShareScore }) => {
+const ButtonTable = ({ upgradeCost, buyUpgrade, handleShareScore }) => {
+  // Alert for the Safe Score button
+  const handleSafeScore = () => {
+    Alert.alert("Currently not implemented! \n Your score is stored temporarily in the game session.");
+  };
+
   return (
     <View style={styles.buttonRow}>
       <TouchableOpacity onPress={buyUpgrade} style={styles.upgradeButton}>
         <Text style={styles.upgradeText}>Upgrade Cost: {upgradeCost}</Text>
       </TouchableOpacity>
 
-    <TouchableOpacity onPress={score} style={styles.shareButton}>
+      <TouchableOpacity onPress={handleSafeScore} style={styles.shareButton}>
         <Text style={styles.shareButtonText}>Safe Score</Text>
-    </TouchableOpacity>
+      </TouchableOpacity>
 
       <TouchableOpacity onPress={handleShareScore} style={styles.shareButton}>
         <Text style={styles.shareButtonText}>Share Score</Text>
@@ -46,7 +52,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
-
 });
 
 export default ButtonTable;

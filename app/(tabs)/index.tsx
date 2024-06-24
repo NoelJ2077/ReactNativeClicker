@@ -5,12 +5,13 @@ import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text as ThemedText, View as ThemedView } from '@/components/Themed';
 
 export default function TabOneScreen() {
-  // Beispiel-Punkte für die Features
+  // some features
   const features = [
-    '- temporary Login',
-    '- temporary safe score',
-    '- Buy upgrades',
-    '- share score (png)',
+    '- firebase user management',
+    '- temporary safe-score',
+    '- Accelerometer implementation => 1.5G',
+    '- refresh IMG',
+    '- onClick Click Effects',
   ];
 
   return (
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(10, 0, 40, 0.9)', // Dark purple
   },
   title: {
     fontSize: 20,

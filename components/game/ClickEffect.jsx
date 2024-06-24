@@ -32,7 +32,7 @@ const ClickEffect = ({ isVisible, buttonDimensions }) => {
   return (
     <View style={[styles.container, { top: shibaPosition.top, left: shibaPosition.left }]}>
       <Animated.Image
-        source={require('../../assets/images/cookieEff.avif')}
+        source={require('../../assets/images/CookieEff.jpg')}
         style={[styles.image, { opacity: opacity }]}
       />
       

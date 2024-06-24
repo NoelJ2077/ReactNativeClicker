@@ -18,9 +18,9 @@ const ScoreTable = ({ allTimeScore, currentScore, upgradeLevel, onRefresh }) => 
           <Text style={styles.scoreText}>Click Power: {upgradeLevel}</Text>
         </View>
         {/** Reload Game Button (will just re render the Picture from MainPicComponent*/}
-        <View style={styles.scoreCell}>
+        <View style={[styles.scoreCell]}>
           <TouchableOpacity onPress={onRefresh} style={styles.refreshButton}>
-            <Text style={styles.scoreText}>Refresh Pic</Text>
+            <Text style={styles.clickable}>Refresh Img</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -71,6 +71,11 @@ const styles = StyleSheet.create({
   reloadText: {
     color: '#fff',
     textAlign: 'center',
+  },
+  clickable: {
+    textDecorationLine: 'underline',
+    color: '#fff',
+    alignSelf: 'center',
   },
 });
 

@@ -7,7 +7,7 @@ import RegisterPage from '../../components/forms/RegisterPage';
 import { auth } from '../../components/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import * as Clipboard from 'expo-clipboard';
-
+import { Accelerometer } from 'expo-sensors';
 // Game imports 
 import ScoreTable from '@/components/game/ScoreTable';
 import MainPicComponent from '@/components/game/MainPic';
@@ -15,6 +15,7 @@ import mainPic from '@/assets/images/cookieMain.png';
 import BtnTable from '@/components/game/BtnTable';
 import ClickEffect from '@/components/game/ClickEffect';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ShakeDetector from '@/components/game/shakerTest';
 
 // Import der ausgelagerten Funktionen
 import { handleClick, buyUpgrade, handleShareScore } from '@/components/game/HandleGame';
@@ -32,7 +33,9 @@ export default function CookieClicker() {
   const [clickEffectVisible, setClickEffectVisible] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const containerDimensions = { width: containerWidth, height: containerHeight };
+  
 
+  // useEffect for the ShakeDetector
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -46,56 +49,79 @@ export default function CookieClicker() {
     return unsubscribe;
   }, []);
 
-// dashboard.jsx
+  // called by the ShakeDetector
   const handleScoreShare = () => {
     handleShareScore(currentUser, score, allTimeScore, window.alert);
   };
 
+  // refresh button for the main picture
   const handleRefresh = () => {
     setRefreshKey((prevKey) => prevKey + 1);
     alert('Picture refreshed!');
   };
 
+  // get the dimensions of the container for the main picture
   const onContainerLayout = (event) => {
     const { width, height } = event.nativeEvent.layout;
     setContainerWidth(width);
     setContainerHeight(height);
   };
 
+  // Logout function
   const handleLogout = () => {
     auth.signOut();
     Alert.alert("Logged out successfully!");
   };
 
+  // Copy email to clipboard
   const handleClipboard = () => {
     Clipboard.setString(currentUser.email);
     Alert.alert('Email: ' + currentUser.email + ' copied to clipboard!');
   };
 
+  // Upgrade function
   const handleUpgrade = () => {
     buyUpgrade(score, setScore, multiplier, setMultiplier, upgradeCost, setUpgradeCost);
   };
 
+  // Switch between Login and Register Page
+  const handleSwitchPage = () => {
+    setShowLoginPage((prev) => !prev);
+  };
+
+  // Login Page or Register Page if no user is logged in
   if (!currentUser) {
     return (
       <View style={styles.container}>
         {showLoginPage ? (
-          <LoginPage onLogin={setCurrentUser} />
+          <>
+            <LoginPage onLogin={setCurrentUser} />
+            <TouchableOpacity style={styles.buttonContainer} onPress={handleSwitchPage}>
+              <Text style={[styles.text, styles.buttonText]}>
+                Go to Register
+              </Text>
+            </TouchableOpacity>
+          </>
         ) : (
-          <RegisterPage onRegister={setCurrentUser} />
+          <>
+            <RegisterPage onRegister={setCurrentUser} />
+            <TouchableOpacity style={styles.buttonContainer} onPress={handleSwitchPage}>
+              <Text style={[styles.text, styles.buttonText]}>
+                Go to Login
+              </Text>
+            </TouchableOpacity>
+          </>
         )}
-        <TouchableOpacity style={styles.buttonContainer} onPress={handleSwitchPage}>
-          <Text style={[styles.text, styles.buttonText]}>
-            {showLoginPage ? "Go to Register" : "Go to Login"}
-          </Text>
-        </TouchableOpacity>
       </View>
     );
   }
 
+  // Game
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
+
+        {/* Navbar with user info and logout button */}
         <View style={styles.navbar}>
           <Text style={styles.navbarText}>Welcome, {currentUser.displayName}</Text>
           <TouchableOpacity onPress={handleClipboard}>
@@ -106,8 +132,10 @@ export default function CookieClicker() {
           </TouchableOpacity>
         </View>
 
+        {/* Top Score Table Bar */}
         <ScoreTable allTimeScore={allTimeScore} currentScore={score} upgradeLevel={multiplier} upgradeCost={upgradeCost} onRefresh={handleRefresh} />
 
+        {/* Main Game with Clickeffect*/}
         <View style={styles.innerContainer} onLayout={onContainerLayout}>
           <View style={styles.header}>
             <MainPicComponent key={refreshKey} source={mainPic} containerWidth={containerDimensions.width} containerHeight={containerDimensions.height} onPress={() => handleClick(score, setScore, setAllTimeScore, multiplier, setClickEffectVisible)} />
@@ -115,16 +143,22 @@ export default function CookieClicker() {
           <ClickEffect isVisible={clickEffectVisible} buttonDimensions={containerDimensions} />
         </View>
 
+        {/* Bottom Bar with buttons */}
         <BtnTable
           upgradeCost={upgradeCost}
           buyUpgrade={handleUpgrade}
           safeScore={score}
           handleShareScore={handleScoreShare}
         />
+
+        {/* ShakeDetector using => Accelerometer from expo-sensors */}
+        <ShakeDetector onShake={handleLogout} />
+
       </View>
     </GestureHandlerRootView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -201,4 +235,17 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
   },
+  clickable: {
+    textDecorationLine: 'underline',
+  },
+  buttonContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    padding: 10,
+    margin: 5,
+    borderRadius: 5,
+    bottom: 200,
+  },
+  buttonText: {
+    color: 'rgba(255, 255, 255, 1)',
+  }
 });

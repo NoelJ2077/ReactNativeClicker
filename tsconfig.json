@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/(tabs)/dashboard.jsx", "components/game/AnimatedShiba.jsx"  ]
+, "app/(tabs)/dashboard.jsx", "components/game/AnimatedShiba.jsx", "components/game/shakerTest.jsx", "components/game/shakerTest.js"  ]
 }
