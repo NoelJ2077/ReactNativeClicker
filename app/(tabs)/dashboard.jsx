@@ -1,27 +1,24 @@
 // dashboard.jsx
-
+// Module imports
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert, Animated, Dimensions } from 'react-native';
-import LoginPage from '../../components/forms/LoginPage';
-import RegisterPage from '../../components/forms/RegisterPage';
 import { auth } from '../../components/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import * as Clipboard from 'expo-clipboard';
-import { Accelerometer } from 'expo-sensors';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 // Game imports 
+import LoginPage from '../../components/forms/LoginPage';
+import RegisterPage from '../../components/forms/RegisterPage';
 import ScoreTable from '@/components/game/ScoreTable';
 import MainPicComponent from '@/components/game/MainPic';
 import mainPic from '@/assets/images/cookieMain.png';
 import BtnTable from '@/components/game/BtnTable';
 import ClickEffect from '@/components/game/ClickEffect';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ShakeDetector from '@/components/game/shakerTest';
-
-// Import der ausgelagerten Funktionen
 import { handleClick, buyUpgrade, handleShareScore } from '@/components/game/HandleGame';
 
 export default function CookieClicker() {
-  const [currentUID, setCurrentUID] = useState(null);
+  const [currentUID, setCurrentUID] = useState(null); // future usage for database firestore
   const [currentUser, setCurrentUser] = useState(null);
   const [showLoginPage, setShowLoginPage] = useState(true);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -34,7 +31,6 @@ export default function CookieClicker() {
   const [refreshKey, setRefreshKey] = useState(0);
   const containerDimensions = { width: containerWidth, height: containerHeight };
   
-
   // useEffect for the ShakeDetector
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -71,6 +67,16 @@ export default function CookieClicker() {
   const handleLogout = () => {
     auth.signOut();
     Alert.alert("Logged out successfully!");
+  };
+
+  // firebase delete account
+  const deleteAccount = () => {
+    currentUser.delete().then(() => {
+      Alert.alert("Account deleted successfully!");
+      auth.signOut();
+    }).catch((error) => {
+      Alert.alert("Error deleting account: " + error.message);
+    });
   };
 
   // Copy email to clipboard
@@ -152,7 +158,7 @@ export default function CookieClicker() {
         />
 
         {/* ShakeDetector using => Accelerometer from expo-sensors */}
-        <ShakeDetector onShake={handleLogout} />
+        <ShakeDetector onShake={deleteAccount} />
 
       </View>
     </GestureHandlerRootView>

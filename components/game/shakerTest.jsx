@@ -13,12 +13,12 @@ export default function ShakeDetector({ onShake }) {
       if (totalAcceleration > threshold) {
         // show alert dialog
         Alert.alert(
-          'Logout',
-          'Do you really want to log out?',
+          'Account deletion:',
+          'Do you really want to delete your account?',
           [
             {
               text: 'Cancel',
-              onPress: () => console.log('Cancelled logout'),
+              onPress: () => console.log('Cancelled deletion'),
               style: 'cancel',
             },
             { text: 'OK', onPress: () => onShake() },

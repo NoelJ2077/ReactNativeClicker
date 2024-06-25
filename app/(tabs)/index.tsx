@@ -7,11 +7,12 @@ import { Text as ThemedText, View as ThemedView } from '@/components/Themed';
 export default function TabOneScreen() {
   // some features
   const features = [
-    '- firebase user management',
+    '- firebase user management (login, register)',
     '- temporary safe-score',
     '- Accelerometer implementation => 1.5G',
-    '- refresh IMG',
+    '- refresh main IMG',
     '- onClick Click Effects',
+    '- shake device to delete Account',
   ];
 
   return (
