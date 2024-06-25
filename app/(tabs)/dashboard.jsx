@@ -2,13 +2,14 @@
 // Module imports
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert, Animated, Dimensions } from 'react-native';
-import { auth } from '../../components/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import * as Clipboard from 'expo-clipboard';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+// firbsase config
+import { auth } from '@/components/firebaseConfig';
 // Game imports 
-import LoginPage from '../../components/forms/LoginPage';
-import RegisterPage from '../../components/forms/RegisterPage';
+import LoginPage from '@/components/forms/LoginPage';
+import RegisterPage from '@/components/forms/RegisterPage';
 import ScoreTable from '@/components/game/ScoreTable';
 import MainPicComponent from '@/components/game/MainPic';
 import mainPic from '@/assets/images/cookieMain.png';

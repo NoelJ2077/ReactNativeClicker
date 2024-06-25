@@ -1,7 +1,7 @@
 // RegisterPage.jsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Dimensions, Pressable, Alert } from 'react-native';
-import { auth, db } from '../firebaseConfig';
+import { auth, db } from '@/components/firebaseConfig';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 

@@ -1,7 +1,7 @@
 // LoginPage.jsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Dimensions, Pressable, Alert } from 'react-native';
-import { auth } from '../firebaseConfig';
+import { auth } from '@/components/firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function LoginPage({ onLogin }) {
