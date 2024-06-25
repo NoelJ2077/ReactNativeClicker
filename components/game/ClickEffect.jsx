@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Animated, Image, StyleSheet, View } from 'react-native';
 
+// ClickEffect component (if cookie is clicked)
 const ClickEffect = ({ isVisible, buttonDimensions }) => {
   const [opacity] = useState(new Animated.Value(isVisible? 1 : 0));
   const [shibaPosition, setShibaPosition] = useState({ top: 0, left: 0 });
@@ -43,8 +44,8 @@ const ClickEffect = ({ isVisible, buttonDimensions }) => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    justifyContent: 'center', // Center vertically
-    alignItems: 'center', // Center horizontally
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
     width: 70,

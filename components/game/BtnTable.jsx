@@ -2,8 +2,8 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View, Alert } from 'react-native';
 
+// ButtonTable component
 const ButtonTable = ({ upgradeCost, buyUpgrade, handleShareScore }) => {
-  // Alert for the Safe Score button
   const handleSafeScore = () => {
     Alert.alert("Currently not implemented! \n Your score is stored temporarily in the game session.");
   };

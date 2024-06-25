@@ -139,13 +139,26 @@ export default function CookieClicker() {
         </View>
 
         {/* Top Score Table Bar */}
-        <ScoreTable allTimeScore={allTimeScore} currentScore={score} upgradeLevel={multiplier} upgradeCost={upgradeCost} onRefresh={handleRefresh} />
-
-        {/* Main Game with Clickeffect*/}
+        <ScoreTable
+          allTimeScore={allTimeScore}
+          currentScore={score}
+          upgradeLevel={multiplier}
+          upgradeCost={upgradeCost}
+          onRefresh={handleRefresh}
+        />
+        
+        {/* Main Game */}
         <View style={styles.innerContainer} onLayout={onContainerLayout}>
           <View style={styles.header}>
-            <MainPicComponent key={refreshKey} source={mainPic} containerWidth={containerDimensions.width} containerHeight={containerDimensions.height} onPress={() => handleClick(score, setScore, setAllTimeScore, multiplier, setClickEffectVisible)} />
+            <MainPicComponent
+              key={refreshKey} 
+              source={mainPic} 
+              containerWidth={containerDimensions.width} 
+              containerHeight={containerDimensions.height} 
+              onPress={() => handleClick(score, setScore, setAllTimeScore, multiplier, setClickEffectVisible)} 
+            />
           </View>
+          {/* ClickEffect component */}
           <ClickEffect isVisible={clickEffectVisible} buttonDimensions={containerDimensions} />
         </View>
 
@@ -234,7 +247,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     overflow: 'hidden',
-    zIndex: 10, // Ensure it's above other components
   },
   clickEffectImage: {
     width: '100%',

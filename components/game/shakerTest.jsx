@@ -10,8 +10,8 @@ export default function ShakeDetector({ onShake }) {
       const { x, y, z } = accelerometerData;
       const totalAcceleration = Math.sqrt(x * x + y * y + z * z);
 
+      // when triggered => action onShake
       if (totalAcceleration > threshold) {
-        // show alert dialog
         Alert.alert(
           'Account deletion:',
           'Do you really want to delete your account?',

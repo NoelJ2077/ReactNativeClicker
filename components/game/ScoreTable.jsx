@@ -8,16 +8,19 @@ const ScoreTable = ({ allTimeScore, currentScore, upgradeLevel, onRefresh }) => 
   return (
     <View style={styles.scoreTable}>
       <View style={styles.scoreRow}>
+        
         <View style={styles.scoreCell}>
           <Text style={styles.scoreText}>All time Score: {allTimeScore}</Text>
         </View>
+        
         <View style={styles.scoreCell}>
           <Text style={styles.scoreText}>Current Score: {currentScore}</Text>
         </View>
+        
         <View style={styles.scoreCell}>
           <Text style={styles.scoreText}>Click Power: {upgradeLevel}</Text>
         </View>
-        {/** Reload Game Button (will just re render the Picture from MainPicComponent*/}
+
         <View style={[styles.scoreCell]}>
           <TouchableOpacity onPress={onRefresh} style={styles.refreshButton}>
             <Text style={styles.clickable}>Refresh Img</Text>

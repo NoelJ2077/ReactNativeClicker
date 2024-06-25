@@ -8,7 +8,7 @@ export default function TabTwoScreen() {
       <Text style={styles.title}>Mobile Cookie Clicker</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Text style={styles.sectionTitle}>Link to my GitHub repository:</Text>
-      <Text style={styles.link} onPress={() => Linking.openURL('https://github.com/NoelJ2077/ExpoGo_CookieClicker')}>
+      <Text style={styles.link} onPress={() => Linking.openURL('https://github.com/NoelJ2077/ReactNativeClicker')}>
         GitHub Project 
       </Text>
       <Text style={styles.explanation}>The GNU General Public License (GPL) is a free, copyleft license for software and other kinds of works. The GPL grants users the freedom to run, study, share, and modify the software.</Text>

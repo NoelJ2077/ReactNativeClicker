@@ -20,7 +20,6 @@ export const buyUpgrade = (score, setScore, multiplier, setMultiplier, upgradeCo
     setMultiplier(multiplier + 1);
     setUpgradeCost(upgradeCost * 2);
   } else {
-    // alert => error: alert is not a function (undefined) fix? =>
       window.alert("Not enough score to buy the upgrade!");
   }
 };
